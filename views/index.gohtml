@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  </head>
+
+  <body>
+    <div id="app">
+      <button v-on:click="init()">Home</button>
+      <button v-on:click="goUp()">..</button>
+      <ol>
+        <li v-for="todo in items">
+          <span v-if="todo.Type === 'dir'">
+            [ todo.Name ] ([ todo.Type ])
+            <button v-on:click="read(todo.Name)">Open</button>
+            <button>Play</button>
+          </span>
+          <span v-if="todo.Type === 'file'">
+            [ todo.Name ] ([ todo.Type ])
+            <button>play</button>
+          </span>
+        </li>
+      </ol>
+    </div>
+    <script type="text/javascript" src="public/scripts/vue.min.js"></script>
+    <script type="text/javascript" src="public/scripts/main.js"></script>
+  </body>
+</html>

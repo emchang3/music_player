@@ -1,0 +1,33 @@
+# Executable
+music_player
+
+# Node Modules
+/node_modules/
+
+# Content
+/content/
+/special/
+
+# Environment Variables
+.env
+
+# Material
+
+material.min.js
+material.min.css
+
+# OSX Finder Bullshit
+
+.DS_Store
+
+# SSL
+
+*.key
+*.csr
+*.pem
+*.crt
+# *.txt
+
+# SSH
+
+ssh.exp

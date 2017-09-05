@@ -1,0 +1,1 @@
+var todoFetch=function(t,e){fetch(e,{method:"get"}).then(function(t){return t.json()}).then(function(e){console.log(t),t.items=e})},app=new Vue({el:"#app",created:function(){todoFetch(this,"/init")},data:{items:[]},delimiters:["[","]"],methods:{goUp:function(){todoFetch(this,"/up")},init:function(){todoFetch(this,"/init")},read:function(t){todoFetch(this,"/ls?item="+t)}}});
