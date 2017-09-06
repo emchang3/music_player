@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os/exec"
 	"strings"
 )
@@ -55,6 +57,41 @@ func playDir(dir string) {
 
 func playFile(filePath string) {
 	cmd := exec.Command("afplay", filePath)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func writeJSON(w http.ResponseWriter, item *[]Item) {
+	js, err := json.Marshal(item)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
+}
+
+func afStop() {
+	cmd := exec.Command("killall", "-STOP", "afplay")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func afCont() {
+	cmd := exec.Command("killall", "-CONT", "afplay")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func afKill() {
+	cmd := exec.Command("killall", "afplay")
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(err)

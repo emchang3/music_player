@@ -31,7 +31,6 @@ func routeHandler() {
 	playGz := gziphandler.GzipHandler(http.HandlerFunc(play))
 	pauseGz := gziphandler.GzipHandler(http.HandlerFunc(pause))
 	contGz := gziphandler.GzipHandler(http.HandlerFunc(cont))
-	nextGz := gziphandler.GzipHandler(http.HandlerFunc(next))
 
 	http.Handle("/", indexGz)
 	http.Handle("/init", initialGz)
@@ -40,7 +39,6 @@ func routeHandler() {
 	http.Handle("/play", playGz)
 	http.Handle("/pause", pauseGz)
 	http.Handle("/cont", contGz)
-	http.Handle("/next", nextGz)
 }
 
 func main() {

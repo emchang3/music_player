@@ -28,15 +28,13 @@ var app = new Vue({
       this.playing = false;
       todoFetch(this, '/pause', 'op');
     },
-    play: function() {
+    play: function(name) {
+      console.log(name);
       this.playing = true;
       todoFetch(this, `/play?item=${name}`, 'op');
     },
     read: function(name) {
       todoFetch(this, `/ls?item=${name}`, 'read');
-    },
-    next: function() {
-      todoFetch(this, '/next', 'op');
     }
   }
 });
