@@ -2,11 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-	"os/exec"
-	"strings"
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/joho/godotenv"
@@ -17,29 +14,6 @@ var Current = "/Users/emchang3/Music"
 
 // Init directory.
 var Init = "/Users/emchang3/Music"
-
-func playDir(dir string) {
-	files, err := ioutil.ReadDir(dir)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	for _, file := range files {
-		fullPath := dir + "/" + file.Name()
-		if file.IsDir() {
-			playDir(fullPath)
-		} else {
-			if strings.Contains(fullPath, ".m4a") {
-				fmt.Println(file.Name())
-				cmd := exec.Command("afplay", fullPath)
-				err := cmd.Run()
-				if err != nil {
-					fmt.Println(err)
-				}
-			}
-		}
-	}
-}
 
 func routeHandler() {
 	fs := http.FileServer(http.Dir("public"))
@@ -54,11 +28,19 @@ func routeHandler() {
 	initialGz := gziphandler.GzipHandler(http.HandlerFunc(initial))
 	readDirGz := gziphandler.GzipHandler(http.HandlerFunc(readDir))
 	cdUpGz := gziphandler.GzipHandler(http.HandlerFunc(cdUp))
+	playGz := gziphandler.GzipHandler(http.HandlerFunc(play))
+	pauseGz := gziphandler.GzipHandler(http.HandlerFunc(pause))
+	contGz := gziphandler.GzipHandler(http.HandlerFunc(cont))
+	nextGz := gziphandler.GzipHandler(http.HandlerFunc(next))
 
 	http.Handle("/", indexGz)
 	http.Handle("/init", initialGz)
 	http.Handle("/ls", readDirGz)
 	http.Handle("/up", cdUpGz)
+	http.Handle("/play", playGz)
+	http.Handle("/pause", pauseGz)
+	http.Handle("/cont", contGz)
+	http.Handle("/next", nextGz)
 }
 
 func main() {

@@ -6,21 +6,30 @@
 
   <body>
     <div id="app">
-      <button v-on:click="init()">Home</button>
-      <button v-on:click="goUp()">..</button>
-      <ol>
-        <li v-for="todo in items">
-          <span v-if="todo.Type === 'dir'">
-            [ todo.Name ] ([ todo.Type ])
-            <button v-on:click="read(todo.Name)">Open</button>
-            <button>Play</button>
-          </span>
-          <span v-if="todo.Type === 'file'">
-            [ todo.Name ] ([ todo.Type ])
-            <button>play</button>
-          </span>
-        </li>
-      </ol>
+      <div>
+        <button v-on:click="init()">Home</button>
+        <button v-on:click="goUp()">..</button>
+      </div>
+      <div>
+        <span v-if="playing">
+          <button v-on:click="pause()">Pause</button>
+          <button v-on:click="next()">next</button>
+        </span>
+        <span v-else>
+          <button v-on:click="cont()">Play</button>
+        </span>
+      </div>
+      <div v-for="todo in items">
+        <span v-if="todo.Type === 'dir'">
+          [ todo.Name ] ([ todo.Type ])
+          <button v-on:click="read(todo.Name)">Open</button>
+          <button v-on:click="play(todo.Name)">Play</button>
+        </span>
+        <span v-if="todo.Type === 'file'">
+          [ todo.Name ] ([ todo.Type ])
+          <button v-on:click="play(todo.Name)">play</button>
+        </span>
+      </div>
     </div>
     <script type="text/javascript" src="public/scripts/vue.min.js"></script>
     <script type="text/javascript" src="public/scripts/main.js"></script>

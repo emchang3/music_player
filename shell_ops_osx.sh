@@ -1,7 +1,7 @@
 #!/usr/local/bin/dash
 
 destroy() {
-  gopid=$(pgrep "alarm")
+  gopid=$(pgrep "music_player")
   gostatus=$?
   if [ $gostatus = "0" ]
   then
@@ -18,11 +18,11 @@ build() {
 }
 
 start() {
-  ./alarm
+  ./music_player
 }
 
 started() {
-  gopid=$(pgrep "alarm")
+  gopid=$(pgrep "music_player")
   gostatus=$?
   if [ $gostatus = "0" ]
   then

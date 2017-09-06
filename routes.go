@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/http"
+	"os/exec"
 	"strings"
 )
 
@@ -14,6 +14,8 @@ type Item struct {
 	Name string
 	Type string
 }
+
+type Nil struct{}
 
 func index(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -84,30 +86,77 @@ func initial(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func read() []Item {
-	var dir []Item
+func play(w http.ResponseWriter, r *http.Request) {
+	thing := r.URL.Query()["item"][0]
+	fmt.Println(thing)
+	fullPath := Current + "/" + thing
+	fmt.Println(fullPath)
 
-	files, err := ioutil.ReadDir(Current)
+	if strings.Contains(fullPath, ".m4a") {
+		playFile(fullPath)
+	} else {
+		playDir(fullPath)
+	}
+
+	js, err := json.Marshal(nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(js)
+	return
+}
+
+func pause(w http.ResponseWriter, r *http.Request) {
+	// killall -next
+	cmd := exec.Command("killall", "-next", "afplay")
+	err := cmd.Run()
 	if err != nil {
 		fmt.Println(err)
-		return dir
 	}
 
-	for _, file := range files {
-		fileType := ""
-		if file.IsDir() {
-			fileType = "dir"
-		} else {
-			if strings.Contains(file.Name(), ".m4a") {
-				fileType = "file"
-			}
-		}
-
-		if fileType == "dir" || fileType == "file" {
-			newFile := Item{Name: file.Name(), Type: fileType}
-			dir = append(dir, newFile)
-		}
+	js, err := json.Marshal(nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	return dir
+	w.Write(js)
+	return
+}
+
+func cont(w http.ResponseWriter, r *http.Request) {
+	// killall -next
+	cmd := exec.Command("killall", "-CONT", "afplay")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	js, err := json.Marshal(nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(js)
+	return
+}
+
+func next(w http.ResponseWriter, r *http.Request) {
+	cmd := exec.Command("killall", "afplay")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	js, err := json.Marshal(nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(js)
+	return
 }
