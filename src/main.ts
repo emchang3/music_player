@@ -11,30 +11,30 @@ var app = new Vue({
   created: function() {
     todoFetch(this, '/init', 'read');
   },
-  data: { items: [], playing: false },
+  data: { items: [] },
   delimiters: [ '[', ']' ],
   methods: {
-    cont: function() {
-      this.playing = true;
-      todoFetch(this, '/cont', 'op');
-    },
     goUp: function() {
       todoFetch(this, '/up', 'read');
     },
     init: function() {
       todoFetch(this, '/init', 'read');
     },
-    pause: function() {
-      this.playing = false;
-      todoFetch(this, '/pause', 'op');
-    },
     play: function(name) {
       console.log(name);
-      this.playing = true;
       todoFetch(this, `/play?item=${name}`, 'op');
+    },
+    playDir: function() {
+      todoFetch(this, `/playdir`, 'op');
     },
     read: function(name) {
       todoFetch(this, `/ls?item=${name}`, 'read');
+    },
+    stop: function() {
+      todoFetch(this, '/stop', 'op');
+    },
+    next: function() {
+      todoFetch(this, '/next', 'op')
     }
   }
 });

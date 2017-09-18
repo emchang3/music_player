@@ -13,6 +13,15 @@ type Item struct {
 	Type string
 }
 
+func cdUp(w http.ResponseWriter, r *http.Request) {
+	splitUp := strings.Split(Current, "/")
+	Current = strings.Join(splitUp[:len(splitUp)-1], "/")
+
+	dir := read()
+
+	writeJSON(w, &dir)
+}
+
 func index(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -28,6 +37,34 @@ func index(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func initial(w http.ResponseWriter, r *http.Request) {
+	Current = Init
+
+	dir := read()
+
+	writeJSON(w, &dir)
+}
+
+func next(w http.ResponseWriter, r *http.Request) {
+	afNext()
+	writeJSON(w, nil)
+}
+
+func play(w http.ResponseWriter, r *http.Request) {
+	thing := r.URL.Query()["item"][0]
+	fullPath := Current + "/" + thing
+
+	afKill()
+	afPlay(fullPath)
+	writeJSON(w, nil)
+}
+
+func playdir(w http.ResponseWriter, r *http.Request) {
+	afKill()
+	afPlay(Current)
+	writeJSON(w, nil)
+}
+
 func readDir(w http.ResponseWriter, r *http.Request) {
 	thing := r.URL.Query()["item"][0]
 	fmt.Println(thing)
@@ -39,42 +76,7 @@ func readDir(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, &dir)
 }
 
-func cdUp(w http.ResponseWriter, r *http.Request) {
-	splitUp := strings.Split(Current, "/")
-	Current = strings.Join(splitUp[:len(splitUp)-1], "/")
-
-	dir := read()
-
-	writeJSON(w, &dir)
-}
-
-func initial(w http.ResponseWriter, r *http.Request) {
-	Current = Init
-
-	dir := read()
-
-	writeJSON(w, &dir)
-}
-
-func play(w http.ResponseWriter, r *http.Request) {
-	thing := r.URL.Query()["item"][0]
-	fullPath := Current + "/" + thing
-
-	if strings.Contains(fullPath, ".m4a") {
-		playFile(fullPath)
-	} else {
-		playDir(fullPath)
-	}
-
-	writeJSON(w, nil)
-}
-
-func pause(w http.ResponseWriter, r *http.Request) {
-	afStop()
-	writeJSON(w, nil)
-}
-
-func cont(w http.ResponseWriter, r *http.Request) {
-	afCont()
+func stop(w http.ResponseWriter, r *http.Request) {
+	afKill()
 	writeJSON(w, nil)
 }

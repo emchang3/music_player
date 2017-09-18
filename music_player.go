@@ -24,21 +24,23 @@ func routeHandler() {
 	// activatorGz := gziphandler.GzipHandler(http.HandlerFunc(fs2))
 	// http.Handle("/432FB6766878ED13CC007C095B54B76A.txt", activatorGz)
 
+	cdUpGz := gziphandler.GzipHandler(http.HandlerFunc(cdUp))
 	indexGz := gziphandler.GzipHandler(http.HandlerFunc(index))
 	initialGz := gziphandler.GzipHandler(http.HandlerFunc(initial))
-	readDirGz := gziphandler.GzipHandler(http.HandlerFunc(readDir))
-	cdUpGz := gziphandler.GzipHandler(http.HandlerFunc(cdUp))
+	nextGz := gziphandler.GzipHandler(http.HandlerFunc(next))
 	playGz := gziphandler.GzipHandler(http.HandlerFunc(play))
-	pauseGz := gziphandler.GzipHandler(http.HandlerFunc(pause))
-	contGz := gziphandler.GzipHandler(http.HandlerFunc(cont))
+	playdirGz := gziphandler.GzipHandler(http.HandlerFunc(playdir))
+	readDirGz := gziphandler.GzipHandler(http.HandlerFunc(readDir))
+	stopGz := gziphandler.GzipHandler(http.HandlerFunc(stop))
 
 	http.Handle("/", indexGz)
 	http.Handle("/init", initialGz)
 	http.Handle("/ls", readDirGz)
-	http.Handle("/up", cdUpGz)
+	http.Handle("/next", nextGz)
 	http.Handle("/play", playGz)
-	http.Handle("/pause", pauseGz)
-	http.Handle("/cont", contGz)
+	http.Handle("/playdir", playdirGz)
+	http.Handle("/stop", stopGz)
+	http.Handle("/up", cdUpGz)
 }
 
 func main() {

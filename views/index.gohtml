@@ -7,12 +7,9 @@
   <body>
     <div id="app">
       <div>
-        <span v-if="playing">
-          <button v-on:click="pause()">Pause</button>
-        </span>
-        <span v-else>
-          <button v-on:click="cont()">Play</button>
-        </span>
+        <button v-on:click="playDir()">Play</button>
+        <button v-on:click="stop()">Stop</button>
+        <button v-on:click="next()">Next</button>
       </div>
       <div>
         <button v-on:click="init()">Home</button>

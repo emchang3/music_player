@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,33 @@ import (
 	"os/exec"
 	"strings"
 )
+
+func afKill() {
+	cmd := exec.Command("shell_commands/music_control.sh", "1")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func afNext() {
+	cmd := exec.Command("shell_commands/music_control.sh", "4")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func afPlay(path string) {
+	cmd := exec.Command("shell_commands/play_music", path)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf(out.String())
+}
 
 func read() []Item {
 	var dir []Item
@@ -37,32 +65,6 @@ func read() []Item {
 	return dir
 }
 
-func playDir(dir string) {
-	files, err := ioutil.ReadDir(dir)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	for _, file := range files {
-		fullPath := dir + "/" + file.Name()
-		if file.IsDir() {
-			playDir(fullPath)
-		} else {
-			if strings.Contains(fullPath, ".m4a") {
-				playFile(fullPath)
-			}
-		}
-	}
-}
-
-func playFile(filePath string) {
-	cmd := exec.Command("afplay", filePath)
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
 func writeJSON(w http.ResponseWriter, item *[]Item) {
 	js, err := json.Marshal(item)
 	if err != nil {
@@ -72,28 +74,4 @@ func writeJSON(w http.ResponseWriter, item *[]Item) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
-}
-
-func afStop() {
-	cmd := exec.Command("killall", "-STOP", "afplay")
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-func afCont() {
-	cmd := exec.Command("killall", "-CONT", "afplay")
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-func afKill() {
-	cmd := exec.Command("killall", "afplay")
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
 }
