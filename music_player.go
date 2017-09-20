@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"net/http"
+	"os/exec"
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/joho/godotenv"
@@ -25,7 +27,7 @@ func routeHandler() {
 	// http.Handle("/432FB6766878ED13CC007C095B54B76A.txt", activatorGz)
 
 	cdUpGz := gziphandler.GzipHandler(http.HandlerFunc(cdUp))
-	indexGz := gziphandler.GzipHandler(http.HandlerFunc(index))
+	// indexGz := gziphandler.GzipHandler(http.HandlerFunc(index))
 	initialGz := gziphandler.GzipHandler(http.HandlerFunc(initial))
 	nextGz := gziphandler.GzipHandler(http.HandlerFunc(next))
 	playGz := gziphandler.GzipHandler(http.HandlerFunc(play))
@@ -33,7 +35,7 @@ func routeHandler() {
 	readDirGz := gziphandler.GzipHandler(http.HandlerFunc(readDir))
 	stopGz := gziphandler.GzipHandler(http.HandlerFunc(stop))
 
-	http.Handle("/", indexGz)
+	// http.Handle("/", indexGz)
 	http.Handle("/init", initialGz)
 	http.Handle("/ls", readDirGz)
 	http.Handle("/next", nextGz)
@@ -43,6 +45,24 @@ func routeHandler() {
 	http.Handle("/up", cdUpGz)
 }
 
+func launchWindow() {
+	cmd := exec.Command("electron", "/Users/emchang3/go/src/music_player/main.js")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Start()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf(stdout.String())
+	fmt.Printf(stderr.String())
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -50,6 +70,7 @@ func main() {
 	}
 
 	routeHandler()
+	launchWindow()
 
 	port := getPort()
 	fmt.Printf("\n--- Listening:%v\n\n", port)

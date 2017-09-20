@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 	"strings"
 )
@@ -22,6 +21,7 @@ func cdUp(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, &dir)
 }
 
+/*
 func index(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -36,6 +36,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 	return
 }
+*/
 
 func initial(w http.ResponseWriter, r *http.Request) {
 	Current = Init

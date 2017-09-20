@@ -5,14 +5,6 @@ stop() {
   killall afplay
 }
 
-cont() {
-  killall -19 afplay
-}
-
-pause() {
-  killall -17 afplay
-}
-
 next() {
   killall afplay
 }
@@ -20,12 +12,6 @@ next() {
 case $1 in
   1 )
     stop
-    ;;
-  2 )
-    cont
-    ;;
-  3 )
-    pause
     ;;
   4 )
     next

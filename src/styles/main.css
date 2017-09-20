@@ -1,0 +1,40 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px;
+}
+
+#dir-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.ctrl-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.dir-item {
+  display: flex;
+  align-items: flex-end;
+}
+
+.space-right {
+  padding-right: 16px;
+}
+
+#general-controls {
+  height: 48px;
+}

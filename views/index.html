@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="../public/styles/material.min.css">
+    <link rel="stylesheet" href="../public/styles/main.css">
+  </head>
+
+  <body>
+    <div id="app">
+      <div id="general-controls" class="ctrl-item">
+        <i
+          id="play-stop"
+          class="material-icons space-right"
+          v-on:click="stopOrPlayCurrent()"
+          style="font-size: 48px;"
+        >
+          [ playing ? 'stop' : 'play_circle_outline' ]
+        </i>
+        <i id="next" class="material-icons space-right" v-on:click="next()">skip_next</i>
+      </div>
+      <div id="nav-controls" class="ctrl-item">
+        <i class="material-icons space-right" v-on:click="init()">home</i>
+        <i class="material-icons space-right" v-on:click="goUp()">keyboard_arrow_up</i>
+      </div>
+      <div id="dir-display">
+        <div v-for="todo in items">
+            <span class="dir-item" v-if="todo.Type === 'dir'">
+              <i
+                id="play-dir"
+                class="material-icons space-right"
+                v-on:click="play(todo.Name)"
+              >
+                play_arrow
+              </i>
+              <i
+                id="open-dir"
+                class="material-icons space-right"
+                v-on:click="read(todo.Name)"
+              >
+                folder
+              </i>
+              [ todo.Name ]
+            </span>
+            <span class="dir-item" v-if="todo.Type === 'file'">
+              <i
+                id="play-file"
+                class="material-icons space-right"
+                v-on:click="play(todo.Name)"
+              >
+                play_arrow
+              </i>
+              [ todo.Name ]
+            </span>
+          </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../public/scripts/vue.min.js"></script>
+    <script type="text/javascript" src="../public/scripts/material.min.js"></script>
+    <script type="text/javascript" src="../public/scripts/main.js"></script>
+  </body>
+</html>

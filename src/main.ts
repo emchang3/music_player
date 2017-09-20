@@ -9,32 +9,45 @@ var todoFetch = (context, url, purpose) => {
 var app = new Vue({
   el: '#app',
   created: function() {
-    todoFetch(this, '/init', 'read');
+    todoFetch(this, 'http://localhost:2001/init', 'read');
   },
-  data: { items: [] },
+  data: { items: [], playing: false },
   delimiters: [ '[', ']' ],
   methods: {
     goUp: function() {
-      todoFetch(this, '/up', 'read');
+      todoFetch(this, 'http://localhost:2001/up', 'read');
     },
     init: function() {
-      todoFetch(this, '/init', 'read');
+      todoFetch(this, 'http://localhost:2001/init', 'read');
     },
     play: function(name) {
       console.log(name);
-      todoFetch(this, `/play?item=${name}`, 'op');
+      todoFetch(this, `http://localhost:2001/play?item=${name}`, 'op');
+      this.playing = true;
     },
     playDir: function() {
-      todoFetch(this, `/playdir`, 'op');
+      todoFetch(this, `http://localhost:2001/playdir`, 'op');
+      this.playing = true;
     },
     read: function(name) {
-      todoFetch(this, `/ls?item=${name}`, 'read');
+      todoFetch(this, `http://localhost:2001/ls?item=${name}`, 'read');
     },
     stop: function() {
-      todoFetch(this, '/stop', 'op');
+      todoFetch(this, 'http://localhost:2001/stop', 'op');
+      this.playing = false;
     },
     next: function() {
-      todoFetch(this, '/next', 'op')
+      todoFetch(this, 'http://localhost:2001/next', 'op');
+      this.playing = true;
+    },
+    stopOrPlayCurrent: function() {
+      if (this.playing) {
+        todoFetch(this, 'http://localhost:2001/stop', 'op');
+        this.playing = false;
+      } else {
+        todoFetch(this, `http://localhost:2001/playdir`, 'op');
+        this.playing = true;
+      }
     }
   }
 });
